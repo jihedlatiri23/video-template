@@ -1,0 +1,26 @@
+{
+  "name": "video-template-generator",
+  "version": "1.0.0",
+  "description": "A minimal video template generator using TypeScript and FFmpeg",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "ts-node src/test-setup.ts",
+    "example": "ts-node src/example.ts",
+    "dynamic-text": "ts-node src/dynamic-text-generator.ts"
+  },
+  "keywords": ["video", "template", "ffmpeg", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+} 

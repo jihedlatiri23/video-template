@@ -1,0 +1,32 @@
+{
+  "intro": "assets/intro_glitch.mp4",
+  "main_clip_duration": 10,
+  "text_overlays": [
+    {
+      "text": "How to...",
+      "start": 0,
+      "end": 2
+    },
+    {
+      "text": "Step 1: Get started",
+      "start": 2,
+      "end": 4
+    },
+    {
+      "text": "Step 2: Follow along",
+      "start": 4,
+      "end": 6
+    },
+    {
+      "text": "Step 3: Practice",
+      "start": 6,
+      "end": 8
+    },
+    {
+      "text": "You got this!",
+      "start": 8,
+      "end": 10
+    }
+  ],
+  "background_music": "assets/audio/backgrounds/background_chill_lofi.mp3"
+}
