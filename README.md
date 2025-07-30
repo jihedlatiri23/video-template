@@ -73,12 +73,22 @@ A powerful video processing tool that automatically converts your videos into ve
 
 ## 📖 Usage
 
-### Getting Your Video File
+### Getting Your Media Files
+
+**Note**: Large media files are not included in the repository to keep it lightweight. You'll need to add your own files:
 
 1. **Download a video** from any source (YouTube, your phone, etc.)
 2. **Save it** in the project root directory
 3. **Rename it** to `recipe-chicken-pasta.mp4` or use your own filename
 4. **Example video**: You can use any video, for example from [this YouTube Shorts video](https://www.youtube.com/shorts/ZwBgS-Ej6j4)
+
+**Required Media Files** (you need to add these):
+- `assets/audio/lofi-study-calm-peaceful-chill-hop-112191.mp3` - Background music
+- `assets/intro_gradient_recipe.mp4` - Intro video (or create your own)
+
+**How to get the required files**:
+- **Background music**: Download royalty-free lofi music from [YouTube Audio Library](https://www.youtube.com/audiolibrary) or [Pixabay](https://pixabay.com/music/)
+- **Intro video**: Create your own or use the provided FFmpeg command in the Customization section
 
 ### Basic Usage
 
