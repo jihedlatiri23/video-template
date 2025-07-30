@@ -7,8 +7,6 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "test": "ts-node src/test-setup.ts",
-    "example": "ts-node src/example.ts",
     "dynamic-text": "ts-node src/dynamic-text-generator.ts"
   },
   "keywords": ["video", "template", "ffmpeg", "typescript"],

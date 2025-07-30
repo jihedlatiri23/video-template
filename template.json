@@ -1,32 +1,32 @@
 {
-  "intro": "assets/intro_glitch.mp4",
+  "intro": "assets/intro_gradient_recipe.mp4",
   "main_clip_duration": 10,
   "text_overlays": [
     {
-      "text": "How to...",
+      "text": "Quick Recipe",
       "start": 0,
       "end": 2
     },
     {
-      "text": "Step 1: Get started",
+      "text": "Step 1: Prep ingredients",
       "start": 2,
       "end": 4
     },
     {
-      "text": "Step 2: Follow along",
+      "text": "Step 2: Cook time",
       "start": 4,
       "end": 6
     },
     {
-      "text": "Step 3: Practice",
+      "text": "Step 3: Plate & serve",
       "start": 6,
       "end": 8
     },
     {
-      "text": "You got this!",
+      "text": "Ready to enjoy!",
       "start": 8,
       "end": 10
     }
   ],
-  "background_music": "assets/audio/backgrounds/background_chill_lofi.mp3"
+  "background_music": "assets/audio/lofi-study-calm-peaceful-chill-hop-112191.mp3"
 }

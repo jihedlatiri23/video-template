@@ -76,23 +76,41 @@ class VideoTemplateGenerator {
     return new Promise((resolve, reject) => {
       const outputPath = 'output/temp_concatenated.mp4';
       const concatFile = 'output/concat.txt';
+      const introWithoutAudio = 'output/temp_intro_no_audio.mp4';
       
-      // Create concat file
-      const concatContent = `file '${path.resolve(this.config.intro)}'\nfile '${path.resolve(trimmedVideoPath)}'`;
-      fs.writeFileSync(concatFile, concatContent);
-      
-      ffmpeg()
-        .input(concatFile)
-        .inputOptions(['-f', 'concat', '-safe', '0'])
+      // First, strip audio from intro video
+      ffmpeg(this.config.intro)
+        .outputOptions(['-an']) // Remove audio
         .videoCodec('libx264')
-        .audioCodec('aac')
         .outputOptions(['-preset', 'fast'])
         .on('end', () => {
-          fs.unlinkSync(concatFile); // Clean up concat file
-          resolve(outputPath);
+          // Create concat file with intro without audio
+          const concatContent = `file '${path.resolve(introWithoutAudio)}'\nfile '${path.resolve(trimmedVideoPath)}'`;
+          fs.writeFileSync(concatFile, concatContent);
+          
+          // Concatenate videos
+          ffmpeg()
+            .input(concatFile)
+            .inputOptions(['-f', 'concat', '-safe', '0'])
+            .videoCodec('libx264')
+            .audioCodec('aac')
+            .outputOptions(['-preset', 'fast'])
+            .on('end', () => {
+              // Clean up temporary files
+              fs.unlinkSync(concatFile);
+              fs.unlinkSync(introWithoutAudio);
+              resolve(outputPath);
+            })
+            .on('error', (err) => {
+              // Clean up on error
+              if (fs.existsSync(concatFile)) fs.unlinkSync(concatFile);
+              if (fs.existsSync(introWithoutAudio)) fs.unlinkSync(introWithoutAudio);
+              reject(err);
+            })
+            .save(outputPath);
         })
         .on('error', reject)
-        .save(outputPath);
+        .save(introWithoutAudio);
     });
   }
 
@@ -102,16 +120,33 @@ class VideoTemplateGenerator {
       
       let filterComplex = '';
       
+      // Get intro duration to offset text overlays
+      const introDuration = 3; // intro_gradient.mp4 is 3 seconds
+      
+
+      
+      // Add main video text overlays
       this.config.text_overlays.forEach((overlay, index) => {
         // Escape special characters in text
         const escapedText = overlay.text.replace(/'/g, "\\'").replace(/:/g, "\\:");
-        const textFilter = `drawtext=text='${escapedText}':fontsize=60:fontcolor=white:x=(w-text_w)/2:y=h-text_h-50:enable='between(t,${overlay.start},${overlay.end})'`;
+        // Position text higher up (y=100 instead of y=h-text_h-50)
+        // Offset timing by intro duration so text appears during main video
+        const adjustedStart = overlay.start + introDuration;
+        const adjustedEnd = overlay.end + introDuration;
+        const textFilter = `drawtext=text='${escapedText}':fontsize=60:fontcolor=white:x=(w-text_w)/2:y=100:enable='between(t,${adjustedStart},${adjustedEnd})'`;
         
-        if (index === 0) {
+        if (filterComplex === '') {
           filterComplex = textFilter;
         } else {
           filterComplex += `,${textFilter}`;
         }
+      });
+      
+      console.log('Main video text overlays timing (adjusted for intro):');
+      this.config.text_overlays.forEach((overlay, index) => {
+        const adjustedStart = overlay.start + introDuration;
+        const adjustedEnd = overlay.end + introDuration;
+        console.log(`  ${index + 1}. "${overlay.text}" (${adjustedStart}s - ${adjustedEnd}s)`);
       });
       
       ffmpeg(videoPath)
@@ -181,6 +216,8 @@ async function main(): Promise<void> {
     
     const configData = fs.readFileSync(configPath, 'utf8');
     const config: TemplateConfig = JSON.parse(configData);
+    
+
     
     // Check if user video path is provided
     const userVideoPath = process.argv[2];
