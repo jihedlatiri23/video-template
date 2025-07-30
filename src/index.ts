@@ -65,7 +65,7 @@ class VideoTemplateGenerator {
         .size('1080x1920') // YouTube Shorts aspect ratio (9:16)
         .videoCodec('libx264')
         .audioCodec('aac')
-        .outputOptions(['-preset', 'fast'])
+        .outputOptions(['-preset', 'ultrafast'])
         .on('end', () => resolve(outputPath))
         .on('error', reject)
         .save(outputPath);
@@ -82,7 +82,7 @@ class VideoTemplateGenerator {
       ffmpeg(this.config.intro)
         .outputOptions(['-an']) // Remove audio
         .videoCodec('libx264')
-        .outputOptions(['-preset', 'fast'])
+        .outputOptions(['-preset', 'ultrafast'])
         .on('end', () => {
           // Create concat file with intro without audio
           const concatContent = `file '${path.resolve(introWithoutAudio)}'\nfile '${path.resolve(trimmedVideoPath)}'`;
@@ -94,7 +94,7 @@ class VideoTemplateGenerator {
             .inputOptions(['-f', 'concat', '-safe', '0'])
             .videoCodec('libx264')
             .audioCodec('aac')
-            .outputOptions(['-preset', 'fast'])
+            .outputOptions(['-preset', 'ultrafast'])
             .on('end', () => {
               // Clean up temporary files
               fs.unlinkSync(concatFile);
@@ -153,7 +153,7 @@ class VideoTemplateGenerator {
         .videoFilters(filterComplex)
         .videoCodec('libx264')
         .audioCodec('aac')
-        .outputOptions(['-preset', 'fast'])
+        .outputOptions(['-preset', 'ultrafast'])
         .on('end', () => resolve(outputPath))
         .on('error', reject)
         .save(outputPath);

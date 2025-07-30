@@ -255,7 +255,7 @@ ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Recipe':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
--c:v libx264 -preset fast assets/intro_gradient_recipe.mp4
+-c:v libx264 -preset ultrafast assets/intro_gradient_recipe.mp4
 ```
 
 **Tutorial Intro** (for tutorial videos):
@@ -264,7 +264,7 @@ ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Tutorial':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
--c:v libx264 -preset fast assets/intro_gradient_tutorial.mp4
+-c:v libx264 -preset ultrafast assets/intro_gradient_tutorial.mp4
 ```
 
 **Product Intro** (for product videos):
@@ -273,7 +273,7 @@ ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Product':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
--c:v libx264 -preset fast assets/intro_gradient_product.mp4
+-c:v libx264 -preset ultrafast assets/intro_gradient_product.mp4
 ```
 
 ### Customizing Intro Text
@@ -290,7 +290,7 @@ ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
 -vf "drawtext=text='Your':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Text':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Here':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
--c:v libx264 -preset fast assets/your-intro.mp4
+-c:v libx264 -preset ultrafast assets/your-intro.mp4
 ```
 
 ### Getting Background Music
