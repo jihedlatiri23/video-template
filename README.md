@@ -83,12 +83,12 @@ A powerful video processing tool that automatically converts your videos into ve
 4. **Example video**: You can use any video, for example from [this YouTube Shorts video](https://www.youtube.com/shorts/ZwBgS-Ej6j4)
 
 **Required Media Files** (you need to add these):
-- `assets/audio/lofi-study-calm-peaceful-chill-hop-112191.mp3` - Background music
-- `assets/intro_gradient_recipe.mp4` - Intro video (or create your own)
+- `assets/audio/your-music.mp3` - Background music
+- `assets/intro_gradient_recipe.mp4` - Intro video (generate using command below)
 
 **How to get the required files**:
 - **Background music**: Download royalty-free lofi music from [YouTube Audio Library](https://www.youtube.com/audiolibrary) or [Pixabay](https://pixabay.com/music/)
-- **Intro video**: Create your own or use the provided FFmpeg command in the Customization section
+- **Intro video**: Generate using the command below or create your own
 
 ### Basic Usage
 
@@ -243,11 +243,44 @@ npm run dynamic-text <video-path> <duration>
 
 ## 🎨 Customization
 
-### Changing Intro Text
+### Generating Intro Videos
+
+**Quick Recipe Intro** (recommended for recipe videos):
+```bash
+# Create assets directory
+mkdir -p assets
+
+# Generate recipe intro with "Quick Recipe Start" text
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+-vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+drawtext=text='Recipe':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+-c:v libx264 -preset fast assets/intro_gradient_recipe.mp4
+```
+
+**Tutorial Intro** (for tutorial videos):
+```bash
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+-vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+drawtext=text='Tutorial':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+-c:v libx264 -preset fast assets/intro_gradient_tutorial.mp4
+```
+
+**Product Intro** (for product videos):
+```bash
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+-vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+drawtext=text='Product':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+-c:v libx264 -preset fast assets/intro_gradient_product.mp4
+```
+
+### Customizing Intro Text
 
 The intro video contains embedded text that changes each second:
 - **0-1s**: "Quick"
-- **1-2s**: "Recipe" 
+- **1-2s**: "Recipe" (or your custom word)
 - **2-3s**: "Start"
 
 To create a new intro with different text:
@@ -258,6 +291,22 @@ ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
 drawtext=text='Text':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Here':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
 -c:v libx264 -preset fast assets/your-intro.mp4
+```
+
+### Getting Background Music
+
+**Download royalty-free music**:
+```bash
+# Create audio directory
+mkdir -p assets/audio
+
+# Download from these sources:
+# 1. YouTube Audio Library: https://www.youtube.com/audiolibrary
+# 2. Pixabay Music: https://pixabay.com/music/
+# 3. Free Music Archive: https://freemusicarchive.org/
+
+# Example: Download a lofi track and save as:
+# assets/audio/lofi-study-calm.mp3
 ```
 
 ### Changing Background Color
