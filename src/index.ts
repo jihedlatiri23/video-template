@@ -36,7 +36,7 @@ class VideoTemplateGenerator {
       const trimmedVideoPath = await this.trimAndScaleVideo(userVideoPath);
       
       // Step 2: Concatenate intro + trimmed user clip
-      const concatenatedPath = await this.concatenateVideos(trimmedVideoPath);
+      const concatenatedPath = await this.concatenateVideos(trimmedVideoPath, "./assets/intro_gradient_recipe.mp4");
       
       // Step 3: Add text overlays
       const withTextPath = await this.addTextOverlays(concatenatedPath);
@@ -72,14 +72,14 @@ class VideoTemplateGenerator {
     });
   }
 
-  private async concatenateVideos(trimmedVideoPath: string): Promise<string> {
+  private async concatenateVideos(trimmedVideoPath: string, introPath: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const outputPath = 'output/temp_concatenated.mp4';
       const concatFile = 'output/concat.txt';
       const introWithoutAudio = 'output/temp_intro_no_audio.mp4';
       
       // First, strip audio from intro video
-      ffmpeg(this.config.intro)
+      ffmpeg(introPath)
         .outputOptions(['-an']) // Remove audio
         .videoCodec('libx264')
         .outputOptions(['-preset', 'ultrafast'])
@@ -220,11 +220,16 @@ async function main(): Promise<void> {
 
     
     // Check if user video path is provided
-    const userVideoPath = process.argv[2];
+    let userVideoPath = process.argv[2];
     if (!userVideoPath) {
       console.error('Usage: npm run dev <path-to-user-video>');
-      console.error('Example: npm run dev ./user-video.mp4');
+      console.error('Example: npm run dev ./assets/recipe-chicken-pasta.mp4');
       process.exit(1);
+    }
+    
+    // If the path doesn't start with ./ or /, assume it's in the assets folder
+    if (!userVideoPath.startsWith('./') && !userVideoPath.startsWith('/')) {
+      userVideoPath = `./assets/${userVideoPath}`;
     }
     
     if (!fs.existsSync(userVideoPath)) {

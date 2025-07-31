@@ -47,57 +47,121 @@ A powerful video processing tool that automatically converts your videos into ve
 
 1. **Clone and install dependencies**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/jihedlatiri23/video-template
    cd video-template-generator
    npm install
    ```
 
-2. **Download Node modules (required)**
-   ```bash
-   # Install all required dependencies
-   npm install
-   ```
+### Complete Workflow
 
-3. **Add your video file**
+1. **Download your video and place it in the assets folder**
    ```bash
-   # Place your video in the project root
+   # Download a video from any source (YouTube, your phone, etc.)
+   # Place it in the assets folder
    # Example: Download a video from YouTube and save it as recipe-chicken-pasta.mp4
    # You can use any video you want, for example from: https://www.youtube.com/shorts/ZwBgS-Ej6j4
-   cp your-video.mp4 ./recipe-chicken-pasta.mp4
+   cp your-video.mp4 ./assets/recipe-chicken-pasta.mp4
    ```
 
-4. **Generate video**
+2. **Generate an intro video** (choose one of the commands below)
    ```bash
-   npm run dev recipe-chicken-pasta.mp4
+   # Recipe intro (recommended for recipe videos)
+   ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
+   -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+   drawtext=text='Recipe':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+   drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+   -c:v libx264 -preset ultrafast assets/intro_gradient_recipe.mp4
+
+   # Tutorial intro (for tutorial videos)
+   ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
+   -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+   drawtext=text='Tutorial':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+   drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+   -c:v libx264 -preset ultrafast assets/intro_gradient_tutorial.mp4
+
+   # Product intro (for product videos)
+   ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
+   -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+   drawtext=text='Product':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+   drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+   -c:v libx264 -preset ultrafast assets/intro_gradient_product.mp4
+   ```
+
+3. **Download background music and place it in the audio folder**
+   ```bash
+   # Download royalty-free lofi music from:
+   # - YouTube Audio Library: https://www.youtube.com/audiolibrary
+   # - Pixabay: https://pixabay.com/music/search/lofi/
+   # - Free Music Archive: https://freemusicarchive.org/
+   
+   # Place the downloaded music file in the audio folder
+   cp your-music.mp3 ./assets/audio/lofi-background.mp3
+   ```
+
+4. **Update the template.json file** to configure your video
+   ```json
+   {
+     "intro": "assets/intro_gradient_recipe.mp4",
+     "main_clip_duration": 10,
+     "text_overlays": [
+       {
+         "text": "Quick Recipe",
+         "start": 0,
+         "end": 2
+       },
+       {
+         "text": "Step 1: Prep ingredients", 
+         "start": 2,
+         "end": 4
+       }
+     ],
+     "background_music": "assets/audio/lofi-background.mp3"
+   }
+   ```
+
+5. **Generate your video**
+   ```bash
+   npm run dev ./assets/recipe-chicken-pasta.mp4
    ```
 
 ## 📖 Usage
 
-### Getting Your Media Files
+### File Structure Setup
 
-**Note**: Large media files are not included in the repository to keep it lightweight. You'll need to add your own files:
+The project uses the following folder structure:
+```
+assets/
+├── .gitkeep                    # Keeps folder tracked by git
+├── recipe-chicken-pasta.mp4    # Your video file (you add this)
+├── intro_gradient_recipe.mp4   # Intro video (you generate this)
+└── audio/
+    ├── .gitkeep                # Keeps folder tracked by git
+    └── lofi-background.mp3     # Background music (you add this)
+```
 
-1. **Download a video** from any source (YouTube, your phone, etc.)
-2. **Save it** in the project root directory
-3. **Rename it** to `recipe-chicken-pasta.mp4` or use your own filename
-4. **Example video**: You can use any video, for example from [this YouTube Shorts video](https://www.youtube.com/shorts/ZwBgS-Ej6j4)
+### Required Files
 
-**Required Media Files** (you need to add these):
-- `assets/audio/your-music.mp3` - Background music
-- `assets/intro_gradient_recipe.mp4` - Intro video (generate using command below)
+You need to add these files to the assets folder:
 
-**How to get the required files**:
-- **Background music**: Download royalty-free lofi music from [YouTube Audio Library](https://www.youtube.com/audiolibrary) or [Pixabay](https://pixabay.com/music/)
-- **Intro video**: Generate using the command below or create your own
+1. **Your video file** - Place in `assets/` folder
+   - Example: `assets/recipe-chicken-pasta.mp4`
+   - Can be any video format (MP4, MOV, AVI, etc.)
+
+2. **Intro video** - Generate using one of the commands in the Quick Start section
+   - Example: `assets/intro_gradient_recipe.mp4`
+
+3. **Background music** - Download and place in `assets/audio/` folder
+   - Example: `assets/audio/lofi-background.mp3`
+   - Download from: YouTube Audio Library, Pixabay, or Free Music Archive
 
 ### Basic Usage
 
 ```bash
-# Generate video with default settings
-npm run dev your-video.mp4
+# Generate video with your file in assets folder
+npm run dev ./assets/recipe-chicken-pasta.mp4
 
-# Generate video with custom duration
-npm run dev your-video.mp4 --duration 15
+# You can also use just the filename if it's in assets folder
+npm run dev recipe-chicken-pasta.mp4
 ```
 
 ### Dynamic Text Generation
@@ -173,9 +237,12 @@ video-template-generator/
 │   ├── dynamic-text-generator.ts  # CLI for dynamic text
 │   └── music-selector.ts     # Music selection utilities
 ├── assets/
-│   ├── intro_gradient_recipe.mp4  # Custom intro video
+│   ├── .gitkeep              # Keeps folder tracked by git
+│   ├── recipe-chicken-pasta.mp4    # Your video file (you add this)
+│   ├── intro_gradient_recipe.mp4   # Intro video (you generate this)
 │   └── audio/
-│       └── lofi-study-calm-peaceful-chill-hop-112191.mp3
+│       ├── .gitkeep          # Keeps folder tracked by git
+│       └── lofi-background.mp3     # Background music (you add this)
 ├── output/                   # Generated videos
 ├── template.json             # Video configuration
 └── package.json
@@ -247,20 +314,46 @@ npm run dynamic-text <video-path> <duration>
 
 **Quick Recipe Intro** (recommended for recipe videos):
 ```bash
-# Create assets directory
-mkdir -p assets
 
-# Generate recipe intro with "Quick Recipe Start" text
-ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+# Generate recipe intro with "Quick Recipe Start" text (Dark Yellow Background)
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Recipe':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
 -c:v libx264 -preset ultrafast assets/intro_gradient_recipe.mp4
 ```
 
+**Customize Your Intro Video:**
+
+You can easily change the **background color** and **text content** by modifying the command:
+
+**Change Background Color:**
+- `0xDAA520` - Dark Yellow (Goldenrod) - *Current*
+- `0x7B68EE` - Purple (Original)
+- `0x4A90E2` - Blue
+- `0x50C878` - Green
+- `0xFF6B6B` - Red
+- `0x8B4513` - Brown
+- `0xFF8C00` - Orange
+
+**Change Text Content:**
+Replace the text values in the command:
+- `'Quick'` → Your first word
+- `'Recipe'` → Your second word  
+- `'Start'` → Your third word
+
+**Example - Custom Tutorial Intro:**
+```bash
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x4A90E2" \
+-vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
+drawtext=text='Tutorial':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
+drawtext=text='Guide':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
+-c:v libx264 -preset ultrafast assets/intro_gradient_tutorial.mp4
+```
+
 **Tutorial Intro** (for tutorial videos):
 ```bash
-ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Tutorial':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
@@ -269,7 +362,7 @@ drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:
 
 **Product Intro** (for product videos):
 ```bash
-ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
 -vf "drawtext=text='Quick':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Product':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Start':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
@@ -286,7 +379,7 @@ The intro video contains embedded text that changes each second:
 To create a new intro with different text:
 
 ```bash
-ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0x7B68EE" \
+ffmpeg -f lavfi -i "color=size=1080x1920:duration=3:rate=30:color=0xDAA520" \
 -vf "drawtext=text='Your':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,1)',\
 drawtext=text='Text':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,1,2)',\
 drawtext=text='Here':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,2,3)'" \
@@ -295,27 +388,54 @@ drawtext=text='Here':fontsize=80:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:e
 
 ### Getting Background Music
 
-**Download royalty-free music**:
+**Download royalty-free lofi music**:
+
 ```bash
 # Create audio directory
 mkdir -p assets/audio
-
-# Download from these sources:
-# 1. YouTube Audio Library: https://www.youtube.com/audiolibrary
-# 2. Pixabay Music: https://pixabay.com/music/
-# 3. Free Music Archive: https://freemusicarchive.org/
-
-# Example: Download a lofi track and save as:
-# assets/audio/lofi-study-calm.mp3
 ```
+
+**Direct Download Links** (Free for commercial use):
+
+**🎵 Lofi Study/Chill Music:**
+- [Lofi Study Calm](https://pixabay.com/music/beautiful-plays-lofi-study-calm-peaceful-chill-hop-112191/) - Perfect for recipe videos
+- [Lofi Hip Hop](https://pixabay.com/music/beautiful-plays-lofi-hip-hop-112192/) - Relaxing background music
+- [Chill Lofi](https://pixabay.com/music/beautiful-plays-chill-lofi-112193/) - Calm and peaceful
+
+**🎵 Alternative Sources:**
+- [YouTube Audio Library](https://www.youtube.com/audiolibrary) - Free music library
+- [Pixabay Music](https://pixabay.com/music/search/lofi/) - Search for "lofi" music
+- [Free Music Archive](https://freemusicarchive.org/) - Independent artists
+
+**📥 How to Download:**
+1. Click any link above
+2. Click "Download" button
+3. Save as `assets/audio/lofi-background.mp3`
+4. Update `template.json` with the file path
+
+**Example template.json:**
+```json
+{
+  "background_music": "assets/audio/lofi-background.mp3"
+}
+```
+
+**🎯 Recommended Music Settings:**
+- **Duration**: 10-15 seconds (will loop automatically)
+- **Format**: MP3 or WAV
+- **Volume**: Normal levels (the tool will adjust automatically)
+- **Style**: Lofi, chill, instrumental (no vocals for better mixing)
 
 ### Changing Background Color
 
 Modify the color value in the FFmpeg command:
-- `0x7B68EE` - Purple (current)
+- `0xDAA520` - Dark Yellow (Goldenrod) - *Current Default*
+- `0x7B68EE` - Purple (Original)
 - `0x4A90E2` - Blue
 - `0x50C878` - Green
 - `0xFF6B6B` - Red
+- `0x8B4513` - Brown
+- `0xFF8C00` - Orange
 
 ## 🚀 Production Deployment
 

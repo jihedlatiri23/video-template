@@ -44,6 +44,12 @@ Thumbs.db
 *.flac
 *.m4a
 
+# Assets folder contents (keep folder structure but ignore files)
+assets/*
+!assets/.gitkeep
+assets/audio/*
+!assets/audio/.gitkeep
+
 # Output files
 output/
 temp/
